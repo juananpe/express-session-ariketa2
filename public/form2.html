@@ -1,0 +1,57 @@
+<html>
+<head>
+  <link rel="stylesheet" href="stylesheets/app.css">
+  
+</head>
+<body>
+<form id="loginForm">
+  <h2>Login</h2>
+  <div class="input-field">
+    <input type="text" name="username" id="username" placeholder="Enter Username">
+  </div>
+  <div class="input-field">
+    <input type="password" name="password" id="password" placeholder="Enter Password">
+  </div>
+  <input type="submit" value="LogIn">
+  <div id="message"></div> <!-- Message display area -->
+</form>
+
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+    // get form values
+    const username = formData.get('username');
+    const password = formData.get('password');
+    console.log(username, password)
+
+    fetch('/users/json', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({username, password})
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+      const messageElement = document.getElementById('message');
+      if(data.status == "error") {
+        // Display error message in red
+        messageElement.style.color = 'red';
+        messageElement.textContent = data.message;
+      } else {
+        // Display success message in green
+        messageElement.style.color = 'green';
+        messageElement.textContent = data.message;
+        location.href = "/protected";
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  });
+</script>
+</body>
+</html>

@@ -9,6 +9,25 @@ router.get('/', function(req, res, next) {
 // load database.json
 const datubase = require('./datubase.json');
 
+
+router.post('/json',(req,res) => {
+
+  datubase.forEach(function(user){
+    if(req.body.username == user.username && req.body.password == user.password){
+      req.session.userid=req.body.username;
+      console.log(req.session)
+    }
+  })
+
+  if (req.session.userid) {
+    res.json({status: 'success', message: 'Logged in'})
+  } else {
+    res.json({status: 'error', message: 'Invalid username or password'})
+  }
+
+})
+
+
 router.post('/',(req,res) => {
 
   datubase.forEach(function(user){
@@ -26,5 +45,9 @@ router.post('/',(req,res) => {
 
 })
 
+router.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+})
 
 module.exports = router;
