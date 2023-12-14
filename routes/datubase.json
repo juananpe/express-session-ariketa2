@@ -1,7 +1,7 @@
 [
     {"username": "user1", "password": "mypassword", "role": "admin"},
     {"username": "jon", "password": "pasahitza1", "role": "user"},
-    {"username": "ane", "password": "pasahitza2", "role": "admin"},
+    {"username": "ane", "password": "$2b$10$lpZrX8Pbj3dZY0yDI467P.YNjVMKEghncehMt13retgHjf6e/47e.", "role": "admin"},
     {"username": "miren", "password": "pasahitza3", "role": "user"}
   ]
   

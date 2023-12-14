@@ -28,7 +28,7 @@ router.post('/json',(req,res) => {
 })
 
 
-router.post('/',(req,res) => {
+router.post('/',(req,res) => {  
 
   datubase.forEach(function(user){
     if(req.body.username == user.username && req.body.password == user.password){
@@ -44,6 +44,37 @@ router.post('/',(req,res) => {
   }
 
 })
+
+/*
+const saltRounds = 10;
+const hashedPassword = await bcrypt.hash('plainTextPassword', saltRounds);
+// Now store 'hashedPassword' in your database instead of the plain text password
+*/
+
+router.post('/fixed', async (req, res) => {
+  let authenticatedUser = null;
+
+  for (const user of datubase) {
+    if (req.body.username == user.username) {
+      // Use bcrypt to compare the provided password with the stored hashed password
+      const match = await bcrypt.compare(req.body.password, user.password);
+      if (match) {
+        authenticatedUser = user;
+        break;
+      }
+    }
+  }
+
+  if (authenticatedUser) {
+    req.session.userid = authenticatedUser.username;
+    console.log(req.session);
+    res.redirect('/protected');
+  } else {
+    res.send('Invalid username or password');
+  }
+});
+
+
 
 router.get('/logout', (req, res) => {
   req.session.destroy();
