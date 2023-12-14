@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const bcrypt = require('bcrypt');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -49,6 +50,8 @@ router.post('/',(req,res) => {
 const saltRounds = 10;
 const hashedPassword = await bcrypt.hash('plainTextPassword', saltRounds);
 // Now store 'hashedPassword' in your database instead of the plain text password
+> console.log(hashedPassword)
+$2b$10$lpZrX8Pbj3dZY0yDI467P.YNjVMKEghncehMt13retgHjf6e/47e.
 */
 
 router.post('/fixed', async (req, res) => {
